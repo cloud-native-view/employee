@@ -1,0 +1,11 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: cloud
+  datasource:
+    url: jdbc:mysql://database:3306/${MYSQL_DATABASE}?createDatabaseIfNotExist=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_ROOT_PASSWORD}
+

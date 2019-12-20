@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee
+  labels:
+    app: employee
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee
+  template:
+    metadata:
+      labels:
+        app: employee
+    spec:
+      containers:
+      - name: employee
+        image: cloudgeekview/employee:release-0
+        ports:
+        - containerPort: 8090
+        env:
+
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysqldb
+              key: database-name
+
+        - name: MYSQL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysqldb
+              key: database-user
+              
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysqldb
+              key: database-password
+              
+        resources:
+            requests:
+              memory: 250Mi
+              cpu: 25m
+            limits:
+              memory: 500Mi
+              cpu: 200m      
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee
+  labels:
+    app: employee
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: employee
