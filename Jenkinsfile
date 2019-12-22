@@ -33,6 +33,7 @@ pipeline {
         withDockerRegistry([ credentialsId: "DockerHubID", url: "" ]) {
         sh 'docker push ${REPOSITORY_TAG}'
         }
+        }
 
       
       stage('Deploy to Cluster') {
