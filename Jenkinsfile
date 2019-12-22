@@ -2,7 +2,6 @@ pipeline {
    agent any
 
    environment {
-     DOCKER_CREDS = credentials('dockeruser-dockerhub-password')
      SERVICE_NAME = "employee"
      REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
    }
