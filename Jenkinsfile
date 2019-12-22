@@ -23,17 +23,11 @@ pipeline {
       }
       
 
-      stage('Build image') {
+      stage('Build and Push Image') {
          steps {
            sh 'docker image build -t ${REPOSITORY_TAG} .'
          }
       }
-      
-       stage('Push image') {
-        withDockerRegistry([ credentialsId: "DockerHubID", url: "" ]) {
-        sh 'docker push ${REPOSITORY_TAG}'
-        }
-        }
 
       
       stage('Deploy to Cluster') {
