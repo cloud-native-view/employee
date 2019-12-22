@@ -2,10 +2,7 @@ pipeline {
    agent any
 
    environment {
-     // You must set the following environment variables
-     // ORGANIZATION_NAME
-     // YOUR_DOCKERHUB_USERNAME (it doesn't matter if you don't have one)
-     
+     DOCKER_CREDS = credentials('dockeruser-dockerhub-password')
      SERVICE_NAME = "employee"
      REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
    }
@@ -22,10 +19,13 @@ pipeline {
             sh '''mvn clean package'''
          }
       }
+      
 
       stage('Build and Push Image') {
          steps {
            sh 'docker image build -t ${REPOSITORY_TAG} .'
+           withDockerRegistry([ credentialsId: 'DockerHubID', url: "" ]) {
+           sh 'docker push ${REPOSITORY_TAG}'
          }
       }
 
